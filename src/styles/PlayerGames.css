@@ -1,0 +1,8 @@
+#winner {
+  font-weight: bold;
+  color: green;
+}
+
+#looser {
+  color: red;
+}
