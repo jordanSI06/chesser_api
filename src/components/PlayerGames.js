@@ -17,7 +17,7 @@ const PlayerGames = ({ games }) => {
 
   return (
     <div>
-      <Typography variant="h3">📅 Parties récentes</Typography>
+      <Typography variant="h3">Parties jouées: {games.length}</Typography>
       <TableContainer component={Paper}>
         <Table>
           <TableHead>
@@ -25,6 +25,7 @@ const PlayerGames = ({ games }) => {
               <TableCell>Date</TableCell>
               <TableCell>Blancs</TableCell>
               <TableCell>Noirs</TableCell>
+              <TableCell>Type de Partie</TableCell>
               <TableCell>Lien</TableCell>
             </TableRow>
           </TableHead>
@@ -46,6 +47,7 @@ const PlayerGames = ({ games }) => {
                     <strong id="winner">{game.black.username} 👑</strong>
                   )}
                 </TableCell>
+                <TableCell>{game.time_class}</TableCell>
                 <TableCell>
                   <a href={game.url} target="_blank" rel="noopener noreferrer">
                     Voir la partie
