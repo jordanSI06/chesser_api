@@ -4,6 +4,7 @@ import DateSelector from "../components/DateSelector";
 import PlayerDetails from "../components/PlayerDetails";
 import { fetchPlayerProfile, fetchPlayerStats, fetchPlayerGames } from "../api/chessAPI";
 import Loader from "../components/Loader";
+import Header from "../components/Header";
 
 
 
@@ -47,6 +48,7 @@ const Root = () => {
 
   return (
     <div>
+      <Header/>
       <SearchBar onSearch={handleSearch} />
       <DateSelector year={year} month={month} setYear={setYear} setMonth={setMonth} />
   
