@@ -1,8 +1,7 @@
 import React, { useState } from "react";
-import PlayerSearch from "../components/PlayerSearch";
-import PlayerProfile from "../components/PlayerProfile";
-import PlayerStats from "../components/PlayerStats";
-import PlayerGames from "../components/PlayerGames";
+import SearchBar from "../components/SearchBar";
+import DateSelector from "../components/DateSelector";
+import PlayerDetails from "../components/PlayerDetails";
 import { fetchPlayerProfile, fetchPlayerStats, fetchPlayerGames } from "../api/chessAPI";
 
 const Root = () => {
@@ -10,13 +9,15 @@ const Root = () => {
   const [stats, setStats] = useState(null);
   const [games, setGames] = useState([]);
   const [error, setError] = useState("");
+  const [year, setYear] = useState(new Date().getFullYear());
+  const [month, setMonth] = useState(String(new Date().getMonth() + 1).padStart(2, "0"));
 
   const handleSearch = async (username) => {
     try {
       setError("");
       const profileResponse = await fetchPlayerProfile(username);
       const statsResponse = await fetchPlayerStats(username);
-      const gamesResponse = await fetchPlayerGames(username, 2024, '01');
+      const gamesResponse = await fetchPlayerGames(username, year, month);
 
       setProfile(profileResponse.data);
       setStats(statsResponse.data);
@@ -31,11 +32,9 @@ const Root = () => {
 
   return (
     <div>
-      <PlayerSearch onSearch={handleSearch} />
-      {error && <p style={{ color: "red", textAlign: "center" }}>{error}</p>}
-      {profile && <PlayerProfile profile={profile} />}
-      {stats && <PlayerStats stats={stats} />}
-      {games.length > 0 && <PlayerGames games={games} />}
+      <SearchBar onSearch={handleSearch} />
+      <DateSelector year={year} month={month} setYear={setYear} setMonth={setMonth} />
+      <PlayerDetails profile={profile} stats={stats} games={games} error={error} />
     </div>
   );
 };
