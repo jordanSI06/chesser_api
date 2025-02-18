@@ -9,7 +9,7 @@ const PlayerDetails = ({ profile, stats, games, error }) => {
       {error && <p style={{ color: "red", textAlign: "center" }}>{error}</p>}
       {profile && <PlayerProfile profile={profile} />}
       {stats && <PlayerStats stats={stats} />}
-      {games.length > 0 && <PlayerGames games={games} />}
+      {games.length > 0 && <PlayerGames games={games} searchedPlayer={profile.username}/>}
     </div>
   );
 };

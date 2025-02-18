@@ -12,12 +12,34 @@ import {
 
 import "../styles/PlayerGames.css";
 
-const PlayerGames = ({ games }) => {
+const PlayerGames = ({ games, searchedPlayer }) => {
   if (!games || games.length === 0) return <Typography>Aucune partie trouvée.</Typography>;
+
+  const calculateStats = (games) => {
+    let wins = 0;
+    let losses = 0;
+    let draws = 0;
+
+    games.forEach((game) => {
+      console.log(game.white.result);
+      if ((game.white.result === "win" && game.white.username === searchedPlayer) || 
+          (game.black.result === "win" && game.black.username === searchedPlayer)) {
+        wins++;
+      }  else if (game.white.result !== "win" && game.black.result !== "win") {
+        draws++;
+      } else{
+        losses++;
+      }
+    });
+    return { wins, losses, draws };
+  };
+
+  const { wins, losses, draws } = calculateStats(games);
 
   return (
     <div>
       <Typography variant="h3">Parties jouées: {games.length}</Typography>
+      <Typography>Victoire: {wins} , Défaite: {losses}, Nulle: {draws} </Typography>
       <TableContainer component={Paper}>
         <Table>
           <TableHead>
