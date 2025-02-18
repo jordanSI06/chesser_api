@@ -1,12 +1,20 @@
 #winner {
   font-weight: bold;
-  color: green;
+  color: rgb(106, 253, 106);
 }
 
 #looser {
-  color: red;
+  color: rgb(255, 105, 105);
 }
 
 #draw {
-  color: rgb(94, 94, 94);
+  color: rgb(216, 216, 216);
+}
+
+a:link{
+  color: white;
+}
+
+a:visited{
+  color: white;
 }

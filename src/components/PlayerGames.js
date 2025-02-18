@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Table,
   TableBody,
@@ -8,11 +8,15 @@ import {
   TableRow,
   Paper,
   Typography,
+  TablePagination,
 } from "@mui/material";
 
 import "../styles/PlayerGames.css";
 
 const PlayerGames = ({ games, searchedPlayer }) => {
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+
   if (!games || games.length === 0) return <Typography>Aucune partie trouvée.</Typography>;
 
   const drawConditions = ["agreed", "repetition", "stalemate", "insufficient", "50move"];
@@ -51,29 +55,38 @@ const PlayerGames = ({ games, searchedPlayer }) => {
     }
   };
 
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
+
   return (
     <div>
-      <Typography variant="h3">Parties jouées: {games.length}</Typography>
-      <Typography>Victoire: {wins}, Défaite: {losses}, Nulle: {draws}</Typography>
-      <Typography>Winrate: {winrate}%</Typography>
-      <TableContainer component={Paper}>
-        <Table>
+      <Typography variant="h3" sx={{textAlign: "Center"}}>Parties jouées: {games.length}</Typography>
+      <Typography sx={{textAlign: "Center"}}>Victoire: {wins}, Défaite: {losses}, Nulle: {draws}</Typography>
+      <Typography sx={{textAlign: "Center"}}>Winrate: {winrate}%</Typography>
+      <TableContainer component={Paper} sx={{ maxWidth: "80%", margin: "auto", backgroundColor: "rgb(83, 83, 83)"}} >
+        <Table sx={{ minWidth: 650}} size="small">
           <TableHead>
-            <TableRow>
-              <TableCell>Date</TableCell>
-              <TableCell>Blancs</TableCell>
-              <TableCell>Noirs</TableCell>
-              <TableCell>Type de Partie</TableCell>
-              <TableCell>Lien</TableCell>
+            <TableRow >
+              <TableCell sx={{ color:"white"}}>Date</TableCell>
+              <TableCell sx={{ color:"white"}}>Blancs</TableCell>
+              <TableCell sx={{ color:"white"}}>Noirs</TableCell>
+              <TableCell sx={{ color:"white"}}>Type de Partie</TableCell>
+              <TableCell sx={{ color:"white"}}>Lien</TableCell>
             </TableRow>
           </TableHead>
-          <TableBody>
-            {games.map((game, index) => (
-              <TableRow key={index}>
-                <TableCell>{new Date(game.end_time * 1000).toLocaleDateString()}</TableCell>
+          <TableBody  >
+            {games.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((game, index) => (
+              <TableRow  key={index} >
+                <TableCell sx={{ color:"white"}}>{new Date(game.end_time * 1000).toLocaleDateString()}</TableCell>
                 <TableCell>{renderPlayerResult(game.white.username, game.white.result)}</TableCell>
                 <TableCell>{renderPlayerResult(game.black.username, game.black.result)}</TableCell>
-                <TableCell>{game.time_class}</TableCell>
+                <TableCell sx={{ color:"white"}}>{game.time_class}</TableCell>
                 <TableCell>
                   <a href={game.url} target="_blank" rel="noopener noreferrer">
                     Voir la partie
@@ -83,6 +96,15 @@ const PlayerGames = ({ games, searchedPlayer }) => {
             ))}
           </TableBody>
         </Table>
+        <TablePagination sx={{ color:"white"}}
+          rowsPerPageOptions={[10, 25, 50]}
+          component="div"
+          count={games.length}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+        />
       </TableContainer>
     </div>
   );
